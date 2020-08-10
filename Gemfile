@@ -5,4 +5,3 @@ gemspec
 
 gem 'rake', '~> 13.0', '>= 13.0.1'
 gem 'rspec', '~> 3.9'
-gem 'captions', '~> 1.3', '>= 1.3.1'
