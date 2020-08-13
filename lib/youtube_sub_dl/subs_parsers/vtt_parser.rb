@@ -1,3 +1,5 @@
+require_relative './sub_track.rb'
+
 module SubsParsers
   class VttParser
     # Parses VTT formatted files and returns
@@ -32,12 +34,16 @@ module SubsParsers
       subs
     end
 
+    def format_name()
+      "vtt"
+    end
+
     private
 
     def create_sub_track(track_line, subs)
       case track_line.split('-->')
         in [start_time, end_time]
-          SubTrack.new(start_time.strip(), end_time.strip(), subs.join("").strip())
+          SubsParsers::SubTrack.new(start_time.strip(), end_time.strip(), subs.join("").strip())
       end
     end
   end

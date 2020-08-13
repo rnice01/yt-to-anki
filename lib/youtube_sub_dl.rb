@@ -1,27 +1,31 @@
 # typed: true
 require_relative './youtube_sub_dl/version.rb'
+require_relative './youtube_sub_dl/subs_parsers/vtt_parser.rb'
+require_relative './youtube_sub_dl/audio_track_builder.rb'
+require_relative './youtube_sub_dl/video_downloader.rb'
+require_relative './youtube_sub_dl/video.rb'
 
 module YoutubeSubDl
   class Error < StandardError; end
+  class SubFileNotExistError < Error; end
 
   def self.run
-    puts 'Enter the URL'
-    url = gets.chomp()
-    app_root = File.join(File.dirname(__FILE__), '../')
-    Dir.chdir(File.join(app_root, 'bin')) do
-      `./youtube-dl "#{url}" --sub-lang ja,en --sub-format vtt --write-sub -o '../downloads/%(title)s'`
-    end
-  end
+    #puts 'Enter the URL'
+    #url = gets.chomp()
+    #puts 'Target language sub'
+    #target_language = gets.chomp()
+    #puts 'Native language sub'
+    #native_language = gets.chomp()
+    url = "https://www.youtube.com/watch?v=QFeB4fjwv3o"
+    target_language = "ja"
+    native_language = "en"
 
-  # Converts a video file to MP3
-  #
-  #@param [String] video_file path to the video file
-  #@return [String] path to the MP3, same name as the video file
-  def video_to_mp3(video_file)
-    base_name = File.basename(video_file, ".*")
-    audio_file = "#{base_name}.mp3"
-    `ffmpeg -i "#{video_file}" -vn -ab 128k -ar 44100 -y "#{audio_file}"`
+    video_file = YoutubeSubDl::VideoDownloader.new.fetch_and_save(url, target_language, native_language)
 
-    audio_file
+    video = YoutubeSubDl::Video.new(video_file, SubsParsers::VttParser.new)
+
+    YoutubeSubDl::AudioTrackBuilder.new(video, target_language, native_language).save_as_csv()
   end
 end
+
+YoutubeSubDl.run
