@@ -17,10 +17,11 @@ module YoutubeSubDl
       langs = "#{target_lang},#{native_lang}"
 
       Dir.chdir("#{Storage::APP_ROOT}/bin") do
-        Open3.popen3("./youtube-dl #{url} --sub-lang #{langs} --sub-format vtt --write-sub --no-warnings --print-json -o '#{Storage::path_for(:video, "")}%(title)s'") do |stdin, stdout, stderr|
+        cmd = "./youtube-dl --sub-lang #{langs} --sub-format vtt --write-sub --no-warnings --print-json -o '#{Storage::path_for(:video, "")}%(title)s' #{url}"
+        Open3.popen3(cmd) do |stdin, stdout, stderr|
           json_output = JSON.parse(stdout.read)
 
-          return Storage::path_for(:video, "#{json_output['fulltitle'].encode('utf-8')}.mkv")
+          return Storage::path_for(:video, "#{json_output['fulltitle'].encode('utf-8')}.#{json_output['ext']}")
         end
       end
     end
