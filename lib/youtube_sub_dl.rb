@@ -10,15 +10,12 @@ module YoutubeSubDl
   class SubFileNotExistError < Error; end
 
   def self.run
-    #puts 'Enter the URL'
-    #url = gets.chomp()
-    #puts 'Target language sub'
-    #target_language = gets.chomp()
-    #puts 'Native language sub'
-    #native_language = gets.chomp()
-    url = "https://www.youtube.com/watch?v=QFeB4fjwv3o"
-    target_language = "ja"
-    native_language = "en"
+    puts 'Enter the URL'
+    url = gets.chomp()
+    puts 'Target language sub'
+    target_language = gets.chomp()
+    puts 'Native language sub'
+    native_language = gets.chomp()
 
     video_file = YoutubeSubDl::VideoDownloader.new.fetch_and_save(url, target_language, native_language)
 

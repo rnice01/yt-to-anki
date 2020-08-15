@@ -1,17 +1,21 @@
 require 'pathname'
+require 'yaml'
 
 module Storage
   class NotAStorageTypeError < StandardError; end
   extend self
 
   APP_ROOT = Pathname.new(__FILE__).join('../../../').to_path()
+  CONFIG = File.exists?("#{APP_ROOT}/config.yml") ? YAML.load(File.read("#{APP_ROOT}/config.yml")) : {}
 
   def path_for(sym, file_name)
+    audio_path = CONFIG.has_key?(:anki_media) ? CONFIG[:anki_media] : "#{APP_ROOT}/tmp"
     paths = {
-      :audio => "#{APP_ROOT}/tmp",
-      :video => "#{APP_ROOT}/downloads",
+      :audio => audio_path,
+      :csv => "#{APP_ROOT}/tmp",
       :subs => "#{APP_ROOT}/downloads",
-      :csv => "#{APP_ROOT}/tmp"
+      :tmp => "#{APP_ROOT}/tmp",
+      :video => "#{APP_ROOT}/downloads"
     }
 
     unless paths.has_key?(sym)

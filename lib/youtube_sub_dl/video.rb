@@ -17,7 +17,7 @@ module YoutubeSubDl
     # @return [String] path to the MP3
     def get_mp3
       base_name = File.basename(@video_file, ".*")
-      audio_file = Storage::path_for(:audio, "#{base_name}.mp3")
+      audio_file = Storage::path_for(:tmp, "#{base_name}.mp3")
       unless File.exist?(audio_file)
         `ffmpeg -i "#{@video_file}" -vn -ab 128k -ar 44100 -y "#{audio_file}"`
       end
