@@ -26,7 +26,7 @@ module YoutubeSubDl
       track_name = "#{name}.mp3"
       track_file = Storage::path_for(:audio, track_name)
       unless File.exists?(track_file)
-        Open3.popen3("ffmpeg -ss #{start} -to #{stop} -i #{@audio_file} #{track_file}")
+        Open3.popen3("ffmpeg -ss #{start} -to #{stop} -i '#{@audio_file}' '#{track_file}'")
       end
       track_name
     end
