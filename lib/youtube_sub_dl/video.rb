@@ -1,3 +1,5 @@
+require_relative './storage.rb'
+
 module YoutubeSubDl
   class Video
     attr_reader :video_file, :title
@@ -15,9 +17,10 @@ module YoutubeSubDl
     # @return [String] path to the MP3
     def get_mp3
       base_name = File.basename(@video_file, ".*")
-      audio_file = "#{base_name}.mp3"
-      `ffmpeg -i "#{@video_file}" -vn -ab 128k -ar 44100 -y "#{audio_file}"`
-
+      audio_file = Storage::path_for(:audio, "#{base_name}.mp3")
+      unless File.exist?(audio_file)
+        `ffmpeg -i "#{@video_file}" -vn -ab 128k -ar 44100 -y "#{audio_file}"`
+      end
       audio_file
     end
 
@@ -30,7 +33,7 @@ module YoutubeSubDl
     # @return [SubsParsers::SubTrack]
     def get_subs(lang)
       sub_file_name = "#{@title}.#{lang}.#{@sub_parser.format_name()}"
-      sub_file = "#{File.dirname(@video_file)}/#{sub_file_name}"
+      sub_file = Storage::path_for(:subs, sub_file_name)
 
       unless File.exist?(sub_file)
         raise YoutubeSubDl::SubFileNotExistError
