@@ -1,34 +1,15 @@
 # YoutubeSubDl
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/youtube_sub_dl`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'youtube_sub_dl'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install youtube_sub_dl
+This is a simple wrapper around [Youtube-dl](https://github.com/ytdl-org/youtube-dl) whose goal is to help automate the creation of
+a CSV of video subtitles to import into Anki. 
 
 ## Usage
 
-TODO: Write usage instructions here
+`ffmpeg` needs to be installed prior to using this so the audio can be sliced for each of the Anki cards. The CSV will be added to the `tmp` folder in the project's root directory and if configured via the `config.yml` the
+audio files for the subs will be saved to your Anki media folder.
 
-## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+I haven't written a Rake task for running it yet but from the project root, simply run `ruby lib/youtube_sub_dl.rb` and follow the prompts. Feel free to create an issue if you run into bugs or have questions/suggestions.
 
 ## Contributing
 
